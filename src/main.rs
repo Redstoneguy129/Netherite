@@ -1,10 +1,14 @@
-use clap::{Parser,Subcommand};
+mod util;
+
+use clap::{Parser, Subcommand};
 use clap::builder::ArgAction;
 
+const VERSION: &'static str = &*util::get_version();
+
 #[derive(Parser)]
+#[command(version = VERSION)]
 #[command(
     name = "Netherite",
-    version = "0.1.0",
     author = "Redstoneguy129",
     about = "Minecraft Launcher CLI",
     long_about = "Netherite is a Minecraft Launcher CLI"
