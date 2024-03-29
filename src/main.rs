@@ -16,8 +16,8 @@ struct Cli {
 
 #[derive(Debug,Subcommand)]
 enum Commands {
-    #[command(about = "Run Minecraft")]
-    Run {
+    #[command(about = "Launch Minecraft")]
+    Launch {
         instance: String,
         account: String,
     },
@@ -84,8 +84,8 @@ fn main() {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::Run { instance, account } => {
-            println!("Running Minecraft instance {} with account {}", instance, account);
+        Commands::Launch { instance, account } => {
+            println!("Launching Minecraft instance {} with account {}", instance, account);
         }
         Commands::Install { version } => {
             let version = version.as_deref().unwrap_or("latest");
