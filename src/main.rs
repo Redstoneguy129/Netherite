@@ -18,7 +18,7 @@ struct Cli {
 enum Commands {
     #[command(about = "Run Minecraft")]
     Run {
-        profile: String,
+        instance: String,
         account: String,
     },
     #[command(about = "Install a Minecraft version")]
@@ -37,7 +37,7 @@ enum Commands {
     #[command(subcommand)]
     Account(Account),
     #[command(subcommand)]
-    Profile(Profile),
+    Instance(Instance),
 }
 
 #[derive(Debug,Subcommand)]
@@ -59,9 +59,9 @@ enum Account {
 }
 
 #[derive(Debug,Subcommand)]
-#[command(about = "Manage Minecraft profile(s)")]
-enum Profile {
-    #[command(about = "Create a new Minecraft profile")]
+#[command(about = "Manage Minecraft instance(s)")]
+enum Instance {
+    #[command(about = "Create a new Minecraft instance")]
     Create {
         name: String,
         version: String,
@@ -70,13 +70,13 @@ enum Profile {
         #[clap(long, action = ArgAction::SetTrue)]
         offline: bool,
     },
-    #[command(about = "Delete a Minecraft profile")]
+    #[command(about = "Delete a Minecraft instance")]
     Delete {
         name: String,
         #[clap(long, action = ArgAction::SetTrue)]
         force: bool,
     },
-    #[command(about = "List Minecraft profile(s)")]
+    #[command(about = "List Minecraft instance(s)")]
     List,
 }
 
@@ -84,8 +84,8 @@ fn main() {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::Run { profile, account } => {
-            println!("Running Minecraft profile {} with account {}", profile, account);
+        Commands::Run { instance, account } => {
+            println!("Running Minecraft instance {} with account {}", instance, account);
         }
         Commands::Install { version } => {
             let version = version.as_deref().unwrap_or("latest");
@@ -118,24 +118,24 @@ fn main() {
                 }
             }
         }
-        Commands::Profile(profile) => {
-            match profile {
-                Profile::Create { name, version, directory, offline: _ } => {
+        Commands::Instance(instance) => {
+            match instance {
+                Instance::Create { name, version, directory, offline: _ } => {
                     if directory.clone().is_none() {
-                        println!("Creating Minecraft profile {} with version {}", name, version);
+                        println!("Creating Minecraft instance {} with version {}", name, version);
                     } else {
-                        println!("Creating Minecraft profile {} with version {} and game directory {}", name, version, directory.unwrap());
+                        println!("Creating Minecraft instance {} with version {} and game directory {}", name, version, directory.unwrap());
                     }
                 }
-                Profile::Delete { name, force } => {
+                Instance::Delete { name, force } => {
                     if force {
-                        println!("Deleting Minecraft profile {} and all associated files", name);
+                        println!("Deleting Minecraft instance {} and all associated files", name);
                     } else {
-                        println!("Deleting Minecraft profile {}", name);
+                        println!("Deleting Minecraft instance {}", name);
                     }
                 }
-                Profile::List => {
-                    println!("Listing Minecraft profiles");
+                Instance::List => {
+                    println!("Listing Minecraft instances");
                 }
             }
         }
