@@ -8,12 +8,14 @@ pub(crate) const fn get_version() -> &'static str {
 pub fn get_instances_path() -> Option<PathBuf> {
     let mut path = get_path()?;
     path.push("instances");
+    fs::create_dir_all(path.clone()).expect("Failed to create instances directory");
     return Some(path);
 }
 
 pub fn get_versions_path() -> Option<PathBuf> {
     let mut path = get_path()?;
     path.push("versions");
+    fs::create_dir_all(path.clone()).expect("Failed to create versions directory");
     return Some(path);
 }
 

@@ -1,4 +1,5 @@
 mod util;
+mod authentication;
 
 use clap::{Parser, Subcommand};
 use clap::builder::ArgAction;
@@ -94,6 +95,7 @@ fn main() {
         Commands::Install { version } => {
             let version = version.as_deref().unwrap_or("latest");
             println!("Installing Minecraft version {}", version);
+            println!("{:?}", util::get_versions_path().unwrap())
         }
         Commands::Remove { version } => {
             println!("Removing Minecraft version {}", version);
@@ -113,6 +115,7 @@ fn main() {
                     } else {
                         println!("Logging into Minecraft account {} with password {} and auth server {}", username, password, auth.unwrap());
                     }
+                    authentication::authenticate(username, password);
                 }
                 Account::Logout { username } => {
                     println!("Logging out of Minecraft account {}", username);
@@ -130,6 +133,8 @@ fn main() {
                     } else {
                         println!("Creating Minecraft instance {} with version {} and game directory {}", name, version, directory.unwrap());
                     }
+                    let version_path = util::get_instances_path().unwrap().push(version);
+                    println!("{:?}", version_path)
                 }
                 Instance::Delete { name, force } => {
                     if force {
